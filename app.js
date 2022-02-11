@@ -3,6 +3,7 @@
 	const mongoose = require("mongoose");
 	const dotenv = require("dotenv");
 	const cors = require("cors");
+	const userRoutes = require("./routes/users");
 
 // [SECTION] Environment Variables Setup
 	dotenv.config();
@@ -19,6 +20,7 @@
 	db.once("open", () => console.log("Connected to MongoDB Atlas"));
 
 // [SECTION] Server Routes
+	app.use("/users", userRoutes);
 
 // [SECTION] Server Responses
 	app.get("/", (req, res) => {
