@@ -62,7 +62,7 @@
 		if (isAdmin) {
 			controller.setAsNonAdmin(id).then(outcome => res.send(outcome));
 		} else {
-			res.send("You are not authotized to do this task since you are not an administrator.")
+			res.send("You are not authorized to do this task since you are not an administrator.")
 		};
 	});
 
