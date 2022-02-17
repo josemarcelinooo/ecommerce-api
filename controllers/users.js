@@ -1,6 +1,7 @@
 // [SECTION] Dependencies and Modules
 	const User = require("../models/User");
 	const bcrypt = require("bcrypt");
+	const auth = require("../auth");
 
 // [SECTION] Functionality - Create
 	// User Registration
@@ -28,6 +29,37 @@
 		});
 	};
 
+	// Email Checker
+	module.exports.checkEmailExists = (reqBody) => {
+		return User.find({email: reqBody.email}).then(result => {
+			if (result.length > 0) {
+				return "Email already exists.";
+			} else {
+				return "Email is still available.";
+			};
+		});
+	};
+
+	// Login (User Authentication)
+	module.exports.loginUser = (reqBody) => {
+		let inputEmail = reqBody.email;
+		let inputPassword = reqBody.password;
+		return User.findOne({email: inputEmail}).then(result => {
+			if (result === null) {
+				return "Email does not exist.";
+			} else {
+				let passW = result.password;
+				const isMatched = bcrypt.compareSync(inputPassword, passW);
+				if (isMatched) {
+					let userData = result.toObject();
+					return {accessToken: auth.createAccessToken(userData)};
+				} else {
+					return "Password does not match. Check credentials";
+				};
+			};
+		});
+	};
+
 // [SECTION] Functionality - Retrieve
 	// Retrieve All Users
 	module.exports.getAllUsers = () => {
@@ -36,5 +68,42 @@
 		});
 	};
 
+	// Retrieve Single User
+	module.exports.getProfile = (id) => {
+		return User.findById(id).then(user => {
+			return user;
+		});
+	};
+
 // [SECTION] Functionality - Update
+	// Set User as Admin
+	module.exports.setAsAdmin = (inputId) => {
+		let updates = {
+			isAdmin: true
+		};
+
+		return User.findByIdAndUpdate(inputId, updates).then((done, err) => {
+			if (done) {
+				return true;
+			} else {
+				return "Failed to convert to administrator."
+			};
+		});
+	};
+
+	// Set Admin to Non-Admin
+	module.exports.setAsNonAdmin = (inputId) => {
+		let updates = {
+			isAdmin: false
+		};
+
+		return User.findByIdAndUpdate(inputId, updates).then((done, err) => {
+			if (done) {
+				return true;
+			} else {
+				return "Failed to convert administrator to non-administrator."
+			};
+		});
+	};
+
 // [SECTION] Functionality - Delete
