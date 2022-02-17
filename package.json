@@ -6,7 +6,16 @@
   "scripts": {
     "start": "nodemon app.js"
   },
-  "keywords": [],
+  "keywords": [
+    "ecommerce api mvp",
+    "express application",
+    "bcrypt application",
+    "cors application",
+    "dotenv application",
+    "jsonwebtoken application",
+    "mongooseapplication",
+    "nodemon application"
+  ],
   "author": "Jose Marcelino Catacutan",
   "license": "ISC",
   "dependencies": {
