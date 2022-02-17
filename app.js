@@ -4,6 +4,7 @@
 	const dotenv = require("dotenv");
 	const cors = require("cors");
 	const userRoutes = require("./routes/users");
+	const productRoutes = require("./routes/products");
 
 // [SECTION] Environment Variables Setup
 	dotenv.config();
@@ -21,6 +22,7 @@
 
 // [SECTION] Server Routes
 	app.use("/users", userRoutes);
+	app.use("/products", productRoutes);
 
 // [SECTION] Server Responses
 	app.get("/", (req, res) => {
