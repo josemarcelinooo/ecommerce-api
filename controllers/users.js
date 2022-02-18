@@ -4,6 +4,7 @@
 	const auth = require("../auth");
 	const Product = require("../models/Product");
 	const products = require("./products");
+	const Order = require("../models/Order");
 
 // [SECTION] Functionality - Create
 	// User Registration
@@ -72,38 +73,84 @@
 				return found;
 			} else {
 				return false;
-			}
-		})
+			};
+		});
 		let name = toBePurchased.name;
 
 		let isUserUpdated = await User.findById(userId).then(user => {
-			user.orders.push({productName: name, quantity: quantity});
-			return user.save().then((saved, err) => {
-				if (err) {
-					return false;
+			let productsBought = [];
+			user.orders.forEach((element) => productsBought.push(element.productName));
+
+			let alreadyBought = 0;
+			for (let i = 0; i < productsBought.length; i++) {
+				if (productsBought[i] === name) {
+					alreadyBought += 1;
+					break;
 				} else {
-					return true;
-				}
-			})
-		})
+					continue;
+				};
+			};
+
+			if (alreadyBought === 1) {
+				return false;
+			} else {
+				user.orders.push({productName: name, quantity: quantity, total: quantity * toBePurchased.price});
+				return user.save().then((saved, err) => {
+					if (err) {
+						return false;
+					} else {
+						return true;
+					};
+				});
+			};
+		});
 
 		let isProductUpdated = await Product.findById(productId).then(product => {
-			product.orders.push({orderId: userId});
-			return product.save().then((saved, err) => {
-				if (err) {
-					return false;
+			let buyers = [];
+			product.orders.forEach((element) => buyers.push(element.orderId));
+
+			let boughtAlready = 0;
+			for (let i = 0; i < buyers.length; i++) {
+				if (buyers[i] === userId) {
+					boughtAlready += 1;
+					break;
 				} else {
-					return true;
-				}
-			})
-		})
+					continue;
+				};
+			};
+
+			if (boughtAlready === 1) {
+				return false;
+			} else {
+				product.orders.push({orderId: userId});
+				return product.save().then((saved, err) => {
+					if (err) {
+						return false;
+					} else {
+						return true;
+					};
+				});
+			};
+		});
 
 		if (isUserUpdated && isProductUpdated) {
 			return true;
 		} else {
-			return "Purchase failed, please contact our support team."
-		}
-	}
+			return "Purchase failed, please contact our support team.";
+		};
+	};
+
+	// User Checkout
+	module.exports.cartCheckout = (userId) => {
+		return User.findById(userId).then(user => {
+			let allUserOrders = user.orders;
+			let total = 0;
+			user.orders.forEach((element) => total += element.total);
+			let toBeReturned = [];
+			toBeReturned.push(allUserOrders, {totalAmount: total, purchasedOn: new Date()});
+			return toBeReturned;
+		});
+	};
 
 // [SECTION] Functionality - Retrieve
 	// Retrieve All Users

@@ -2,7 +2,7 @@
 	const mongoose = require("mongoose");
 
 // [SECTION] Schema
-	const OrderSchema = new mongoose.Schema({
+	const orderSchema = new mongoose.Schema({
 		totalAmount: {
 			type: Number,
 			required: [true, "Total amount is required"]

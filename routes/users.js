@@ -45,6 +45,19 @@
 		}
 	});
 
+	// User Checkout
+	route.post("/checkout", auth.verify, (req, res) => {
+		let payload = auth.decode(req.headers.authorization);
+		let userId = payload.id;
+		let isAdmin = payload.isAdmin;
+
+		if (!isAdmin) {
+			controller.cartCheckout(userId).then(outcome => res.send(outcome));
+		} else {
+			res.send("Please contact our support team.");
+		};
+	});
+
 // [SECTION] GET Routes
 	// Retrieve All Users
 	route.get("/all", auth.verify, (req, res) => {
