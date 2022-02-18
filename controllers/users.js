@@ -94,7 +94,8 @@
 			if (alreadyBought === 1) {
 				return false;
 			} else {
-				user.orders.push({productName: name, quantity: quantity, total: quantity * toBePurchased.price});
+				user.orders.push({products: {productName: name, quantity: quantity, total: quantity *toBePurchased.price}, totalAmount: quantity * toBePurchased.price});
+				
 				return user.save().then((saved, err) => {
 					if (err) {
 						return false;
@@ -138,18 +139,6 @@
 		} else {
 			return "Purchase failed, please contact our support team.";
 		};
-	};
-
-	// User Checkout
-	module.exports.cartCheckout = (userId) => {
-		return User.findById(userId).then(user => {
-			let allUserOrders = user.orders;
-			let total = 0;
-			user.orders.forEach((element) => total += element.total);
-			let toBeReturned = [];
-			toBeReturned.push(allUserOrders, {totalAmount: total, purchasedOn: new Date()});
-			return toBeReturned;
-		});
 	};
 
 // [SECTION] Functionality - Retrieve
