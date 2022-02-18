@@ -29,25 +29,13 @@
 		},
 		orders: [
 			{
-				products: [
-					{
-						productName: {
-							type: String,
-							required: [true, "Product is required."]
-						},
-						quantity: {
-							type: Number,
-							required: [true, "Quantity is required."]
-						}
-					}
-				],
-				totalAmount: {
-					type: Number,
-					required: [true, "Total amount is required."]
+				productName: {
+					type: String,
+					required: [true, "Product is required."]
 				},
-				purchasedOn: {
-					type: Date,
-					default: new Date()
+				quantity: {
+					type: Number,
+					required: [true, "You need at least 1."]
 				}
 			}
 		]

@@ -2,6 +2,8 @@
 	const User = require("../models/User");
 	const bcrypt = require("bcrypt");
 	const auth = require("../auth");
+	const Product = require("../models/Product");
+	const products = require("./products");
 
 // [SECTION] Functionality - Create
 	// User Registration
@@ -59,6 +61,49 @@
 			};
 		});
 	};
+
+	// Non-Admin Product Purchase
+	module.exports.addToCart = async (data) => {
+		let userId = data.userId;
+		let productId = data.productId;
+		let quantity = data.quantity;
+		let toBePurchased = await Product.findById(productId).then((found, err) => {
+			if (found) {
+				return found;
+			} else {
+				return false;
+			}
+		})
+		let name = toBePurchased.name;
+
+		let isUserUpdated = await User.findById(userId).then(user => {
+			user.orders.push({productName: name, quantity: quantity});
+			return user.save().then((saved, err) => {
+				if (err) {
+					return false;
+				} else {
+					return true;
+				}
+			})
+		})
+
+		let isProductUpdated = await Product.findById(productId).then(product => {
+			product.orders.push({orderId: userId});
+			return product.save().then((saved, err) => {
+				if (err) {
+					return false;
+				} else {
+					return true;
+				}
+			})
+		})
+
+		if (isUserUpdated && isProductUpdated) {
+			return true;
+		} else {
+			return "Purchase failed, please contact our support team."
+		}
+	}
 
 // [SECTION] Functionality - Retrieve
 	// Retrieve All Users

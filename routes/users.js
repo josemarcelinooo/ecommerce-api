@@ -24,6 +24,27 @@
 		controller.loginUser(data).then(outcome => res.send(outcome));
 	});
 
+	// Add Product to Cart
+	route.post("/add-to-cart", auth.verify, (req, res) => {
+		let payload = auth.decode(req.headers.authorization);
+		let userId = payload.id;
+		let isAdmin = payload.isAdmin;
+		let productId = req.body.productId;
+		let orderQuantity = req.body.quantity;
+
+		let data = {
+			userId: userId,
+			productId: productId,
+			quantity: orderQuantity
+		};
+
+		if (!isAdmin) {
+			controller.addToCart(data).then(outcome => res.send(outcome));
+		} else {
+			res.send("Use a regular account to purchase.")
+		}
+	});
+
 // [SECTION] GET Routes
 	// Retrieve All Users
 	route.get("/all", auth.verify, (req, res) => {
