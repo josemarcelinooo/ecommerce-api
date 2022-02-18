@@ -88,3 +88,19 @@
 	};
 
 // [SECTION] Functionality - Delete
+	// Delete Product
+	module.exports.deleteProduct = (id) => {
+		return Product.findById(id).then(product => {
+			if (product === null) {
+				return "No product was found.";
+			} else {
+				return product.remove().then((removedProduct, err) => {
+					if (err) {
+						return "Failed to remove product.";
+					} else {
+						return "Successfully destroyed product data.";
+					};
+				});
+			};
+		});
+	};

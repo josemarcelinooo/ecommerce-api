@@ -68,5 +68,16 @@
 	});
 
 // [SECTION] DELETE Routes
+	route.delete("/:productId", auth.verify, (req, res) => {
+		let isAdmin = auth.decode(req.headers.authorization).isAdmin;
+		let id = req.params.productId;
+
+		if (isAdmin) {
+			controller.deleteProduct(id).then(outcome => res.send(outcome));
+		} else {
+			res.send("You are not authorized to delete products.");
+		};
+	});
+
 // [SECTION] Expose Route System
 	module.exports = route;
