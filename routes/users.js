@@ -10,7 +10,11 @@
 	// Register User
 	route.post("/register", (req, res) => {
 		let userInput = req.body;
-		controller.registerUser(userInput).then(outcome => res.send(outcome));
+		if (controller.checkEmailExists) {
+			res.send("Email already used.");
+		} else {
+			controller.registerUser(userInput).then(outcome => res.send(outcome));
+		}
 	});
 
 	// Check Email
