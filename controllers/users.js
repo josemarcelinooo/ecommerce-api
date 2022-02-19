@@ -157,4 +157,28 @@
 		});
 	};
 
-// [SECTION] Functionality - Delete
+	// Change Password
+	module.exports.changePassword = (reqBody) => {
+		let uEmail = reqBody.email;
+		let uPassW = reqBody.password;
+		return User.findOne({email: uEmail}).then(result => {
+			if (result === null) {
+				return "Email does not exist.";
+			} else {
+				let passW = result.password;
+				const isMatched = bcrypt.compareSync(uPassW, passW);
+				if (isMatched) {
+					let newPass = reqBody.newpassword;
+					return User.findOneAndUpdate({email: uEmail}, {password: bcrypt.hashSync(newPass, 10)}).then((savedUser, err) => {
+						if (err) {
+							return false;
+						} else {
+							return savedUser;
+						};
+					});
+				} else {
+					return "Password does not match. Check credentials";
+				};
+			};
+		});
+	};

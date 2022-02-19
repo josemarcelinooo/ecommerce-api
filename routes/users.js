@@ -87,6 +87,13 @@
 		};
 	});
 
-// [SECTION] DEL Routes
+	// Change Password
+	route.put("/change-password", (req, res) => {
+		let data = req.body;
+		controller.changePassword(data).then(outcome => {
+			res.send(outcome);
+		});
+	});
+
 // [SECTION] Expose Route System
 	module.exports = route;
