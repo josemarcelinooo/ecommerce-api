@@ -78,60 +78,25 @@
 		let name = toBePurchased.name;
 
 		let isUserUpdated = await User.findById(userId).then(user => {
-			let productsBought = [];
-			user.orders.forEach((element) => productsBought.push(element.productName));
-
-			let alreadyBought = 0;
-			for (let i = 0; i < productsBought.length; i++) {
-				if (productsBought[i] === name) {
-					alreadyBought += 1;
-					break;
+			user.orders.push({products: {productName: name, quantity: quantity}, totalAmount: quantity * toBePurchased.price});
+			return user.save().then((save, err) => {
+				if (err) {
+					return false;
 				} else {
-					continue;
+					return true;
 				};
-			};
-
-			if (alreadyBought === 1) {
-				return false;
-			} else {
-				user.orders.push({products: {productName: name, quantity: quantity, total: quantity *toBePurchased.price}, totalAmount: quantity * toBePurchased.price});
-				
-				return user.save().then((saved, err) => {
-					if (err) {
-						return false;
-					} else {
-						return true;
-					};
-				});
-			};
+			});
 		});
 
 		let isProductUpdated = await Product.findById(productId).then(product => {
-			let buyers = [];
-			product.orders.forEach((element) => buyers.push(element.orderId));
-
-			let boughtAlready = 0;
-			for (let i = 0; i < buyers.length; i++) {
-				if (buyers[i] === userId) {
-					boughtAlready += 1;
-					break;
+			product.orders.push({orderId: userId});
+			return product.save().then((saved, err) => {
+				if (err) {
+					return false;
 				} else {
-					continue;
+					return true;
 				};
-			};
-
-			if (boughtAlready === 1) {
-				return false;
-			} else {
-				product.orders.push({orderId: userId});
-				return product.save().then((saved, err) => {
-					if (err) {
-						return false;
-					} else {
-						return true;
-					};
-				});
-			};
+			});
 		});
 
 		if (isUserUpdated && isProductUpdated) {

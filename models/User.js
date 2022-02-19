@@ -38,10 +38,6 @@
 						quantity: {
 							type: Number,
 							required: [true, "You need at least 1."]
-						},
-						total: {
-							type: Number,
-							required: [true, "Total is required."]
 						}
 					}
 				],
