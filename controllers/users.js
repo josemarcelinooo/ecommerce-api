@@ -4,7 +4,6 @@
 	const auth = require("../auth");
 	const Product = require("../models/Product");
 	const products = require("./products");
-	const Order = require("../models/Order");
 
 // [SECTION] Functionality - Create
 	// User Registration
@@ -14,13 +13,19 @@
 		let mName = data.middleName;
 		let email = data.email;
 		let password = data.password;
+		let mobileNumber = data.mobileNo;
+		let gender = data.gender;
+		let homeAddress = data.homeAddress;
 
 		let newUser = new User({
 			firstName: fName,
 			lastName: lName,
 			middleName: mName,
 			email: email,
-			password: bcrypt.hashSync(password, 10)
+			password: bcrypt.hashSync(password, 10),
+			mobileNo: mobileNumber,
+			gender: gender,
+			homeAddress: homeAddress
 		});
 
 		return newUser.save().then((userSaved, err) => {

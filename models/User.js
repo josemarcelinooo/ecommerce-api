@@ -23,6 +23,18 @@
 			type: String,
 			required: [true, "Password is required."]
 		},
+		mobileNo: {
+			type: String,
+			required: [true, "Mobile number is required."]
+		},
+		gender: {
+			type: String,
+			required: [true, "Gender is required."]
+		},
+		homeAddress: {
+			type: String,
+			required: [true, "Home address is required."]
+		},
 		isAdmin: {
 			type: Boolean,
 			default: false,
