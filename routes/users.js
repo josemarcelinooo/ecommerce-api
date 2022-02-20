@@ -62,6 +62,22 @@
 		controller.getProfile(userId).then(outcome => res.send(outcome));
 	});
 
+	// Retrieve Single User Order
+	route.get("/user-order", auth.verify, (req, res) => {
+		let userId = auth.decode(req.headers.authorization).id;
+		controller.getOrder(userId).then(outcome => res.send(outcome));
+	});
+
+	// Retrieve All User Orders
+	route.get("/all-user-orders", auth.verify, (req, res) => {
+		let isAdmin = auth.decode(req.headers.authorization).isAdmin;
+		if (isAdmin) {
+			controller.getAllOrders().then(outcome => res.send(outcome));
+		} else {
+			res.send("You are not permitted to access this resource.");
+		};
+	});
+
 // [SECTION] PUT Routes
 	// Set User as Admin
 	route.put("/:userId/set-as-admin", auth.verify, (req, res) => {

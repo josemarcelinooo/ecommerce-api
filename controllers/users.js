@@ -132,6 +132,27 @@
 		});
 	};
 
+	// Retrieve Single User Order
+	module.exports.getOrder = (id) => {
+		return User.findById(id).then(user => {
+			return user.orders;
+		});
+	};
+
+	// Retrieve All User Orders
+	module.exports.getAllOrders = () => {
+		return User.find({}).then(user => {
+			console.log(user);
+			list = [];
+			user.map((u) => {
+				list.push(u.firstName, u.lastName, u.email, u.orders);
+			});
+			console.log("----------");
+			console.log(list);
+			return list;
+		});		
+	};
+
 // [SECTION] Functionality - Update
 	// Set User as Admin
 	module.exports.setAsAdmin = (inputId) => {
