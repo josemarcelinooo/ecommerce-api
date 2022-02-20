@@ -28,13 +28,19 @@
 			homeAddress: homeAddress
 		});
 
-		return newUser.save().then((userSaved, err) => {
-			if (userSaved) {
-				return userSaved;
+		return User.find({email: newUser.email}).then(result => {
+			if (result.length > 0) {
+				return "Email already used. Sorry!";
 			} else {
-				return false;
-			};
-		});
+				return newUser.save().then((userSaved, err) => {
+					if (userSaved) {
+						return userSaved;
+					} else {
+						return false;
+					};
+				});
+			}
+		})
 	};
 
 	// Email Checker
