@@ -60,7 +60,7 @@
 		let inputPassword = reqBody.password;
 		return User.findOne({email: inputEmail}).then(result => {
 			if (result === null) {
-				return "Email does not exist.";
+				return false;
 			} else {
 				let passW = result.password;
 				const isMatched = bcrypt.compareSync(inputPassword, passW);
@@ -68,7 +68,7 @@
 					let userData = result.toObject();
 					return {accessToken: auth.createAccessToken(userData)};
 				} else {
-					return "Password does not match. Check credentials";
+					return false;
 				};
 			};
 		});

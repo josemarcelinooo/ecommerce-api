@@ -13,7 +13,9 @@
 
 // [SECTION] Server Setup
 	const app = express();
+	app.use(cors());
 	app.use(express.json());
+	app.use(express.urlencoded({extended: true}));
 
 // [SECTION] Database Connect
 	mongoose.connect(credentials);
