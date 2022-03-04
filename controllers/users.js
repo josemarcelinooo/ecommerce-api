@@ -34,7 +34,7 @@
 			} else {
 				return newUser.save().then((userSaved, err) => {
 					if (userSaved) {
-						return true;
+						return userSaved;
 					} else {
 						return false;
 					};
