@@ -30,11 +30,11 @@
 
 		return User.find({email: newUser.email}).then(result => {
 			if (result.length > 0) {
-				return "Email already used. Sorry!";
+				return false;
 			} else {
 				return newUser.save().then((userSaved, err) => {
 					if (userSaved) {
-						return userSaved;
+						return true;
 					} else {
 						return false;
 					};
