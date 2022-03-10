@@ -66,7 +66,7 @@
 
 		return Product.findByIdAndUpdate(id, updatedProduct).then((productUpdated, err) => {
 			if (productUpdated) {
-				return true;
+				return productUpdated;
 			} else {
 				return "Failed to update product.";
 			};
