@@ -59,13 +59,24 @@
 	// Archive Product
 	route.put("/:productId/archive", auth.verify, (req, res) => {
 		let isAdmin = auth.decode(req.headers.authorization).isAdmin;
-		let id = req.params
+		let id = req.params;
 		if (isAdmin) {
 			controller.archiveProduct(id).then(outcome => res.send(outcome));
 		} else {
-			res.send("You cannot archive this course since you're not an administrator.");
+			res.send("You cannot archive this product since you're not an administrator.");
 		};
 	});
+
+	// Unarchive Product
+	route.put("/:productId/unarchive", auth.verify, (req, res) => {
+		let isAdmin = auth.decode(req.headers.authorization).isAdmin;
+		let id = req.params;
+		if (isAdmin) {
+			controller.unarchiveProduct(id).then(outcome => res.send(outcome)); 
+		} else {
+			res.send("You cannot unarchive this product since you're not an administrator.")
+		}
+	})
 
 // [SECTION] DELETE Routes
 	route.delete("/:productId", auth.verify, (req, res) => {

@@ -84,7 +84,23 @@
 
 		return Product.findByIdAndUpdate(id, updates).then((archived, err) => {
 			if (archived) {
-				return "Product has been archived.";
+				return true;
+			} else {
+				return false;
+			};
+		});
+	};
+
+	// Unarchive Product
+	module.exports.unarchiveProduct = (product) => {
+		let id = product.productId;
+		let updates = {
+			isActive: true
+		};
+
+		return Product.findByIdAndUpdate(id, updates).then((unarchived, err) => {
+			if (unarchived) {
+				return true;
 			} else {
 				return false;
 			};
