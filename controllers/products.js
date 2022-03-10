@@ -55,11 +55,13 @@
 		let pName = details.name;
 		let pDesc = details.description;
 		let pPrice = details.price;
+		let pImageUrl = details.imageUrl;
 
 		let updatedProduct = {
 			name: pName,
 			description: pDesc,
-			price: pPrice
+			price: pPrice,
+			imageUrl: pImageUrl
 		};
 
 		let id = product.productId;
