@@ -9,11 +9,13 @@
 		let pName = product.name;
 		let pDesc = product.description;
 		let pPrice = product.price;
+		let pUrl = product.imageUrl
 
 		let newProduct = new Product({
 			name: pName,
 			description: pDesc,
-			price: pPrice
+			price: pPrice,
+			imageUrl: pUrl
 		});
 
 		return newProduct.save().then((savedProduct, err) => {
